@@ -1,0 +1,24 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../site.config";
+const years = new Date().getFullYear() - site.founded;
+---
+<Base title={`About Us | ${site.name}`} description={`Family-run general contractor based in ${site.address.city}, NJ, building in Bergen County since ${site.founded}.`}>
+  <section class="grid-paper text-paper">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16">
+      <h1 class="wide font-black text-4xl sm:text-6xl leading-none tracking-tight">About the company with the long name</h1>
+    </div>
+  </section>
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-16 grid gap-12 lg:grid-cols-[1fr_20rem]">
+    <div class="prose-measure space-y-5 text-lg">
+      <p>We started in {site.founded} with one truck and a lot of drywall. {years} years later we're still based in {site.address.city}, still answering our own phone, and still showing up when we said we would.</p>
+      <p>The name started as a joke between two friends and stuck because customers remembered it. The work is serious: licensed, insured, permitted, and inspected.</p>
+      <p>Every project gets one project lead who's on site most days and texts you an update at the end of every workday. You'll never wonder who's in charge or what's happening next.</p>
+    </div>
+    <dl class="border-t-2 border-blueprint">
+      <div class="border-b border-line py-4"><dt class="text-sm text-blueprint/70">Founded</dt><dd class="wide font-extrabold text-2xl text-blueprint">{site.founded}</dd></div>
+      <div class="border-b border-line py-4"><dt class="text-sm text-blueprint/70">Based in</dt><dd class="wide font-extrabold text-2xl text-blueprint">{site.address.city}, NJ</dd></div>
+      <div class="border-b border-line py-4"><dt class="text-sm text-blueprint/70">License</dt><dd class="font-semibold">{site.license}</dd></div>
+    </dl>
+  </section>
+</Base>

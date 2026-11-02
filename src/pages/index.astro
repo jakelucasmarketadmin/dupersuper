@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import LeadForm from "../components/LeadForm.astro";
+import { site, services, process } from "../site.config";
+const telHref = "tel:" + site.phone.replace(/[^\d]/g, "");
+const years = new Date().getFullYear() - site.founded;
+---
+<Base title={`General Contractor in Bergen County, NJ | ${site.shortName}`}>
+  <!-- Hero: the company name drawn like a dimensioned blueprint -->
+  <section class="grid-paper text-paper">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 pb-16 sm:pt-20 sm:pb-24">
+      <div class="relative">
+        <div class="hidden sm:flex items-center gap-3 text-line text-sm mb-4" aria-hidden="true">
+          <span class="h-4 border-l border-line"></span>
+          <span class="flex-1 border-t border-line border-dashed"></span>
+          <span class="whitespace-nowrap">Yes, that's the whole name</span>
+          <span class="flex-1 border-t border-line border-dashed"></span>
+          <span class="h-4 border-l border-line"></span>
+        </div>
+        <h1 class="wide font-black leading-[0.92] tracking-tight text-[clamp(2.6rem,7.4vw,5.9rem)]">
+          Super Duper<br />Contractor Man<br /><span class="text-hivis">Dude Company</span>
+        </h1>
+      </div>
+      <div class="mt-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <p class="text-xl sm:text-2xl leading-snug max-w-[34ch]">
+          {site.tagline} Serving Bergen County since {site.founded}.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/contact" class="bg-hivis text-blueprint-deep font-semibold text-lg px-6 py-3.5 hover:bg-white">Get a free estimate</a>
+          <a href={telHref} class="border-2 border-line text-paper font-semibold text-lg px-6 py-3 hover:border-hivis hover:text-hivis tabular-nums">{site.phone}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof strip -->
+  <section class="bg-hivis text-blueprint-deep">
+    <ul class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex flex-wrap gap-x-10 gap-y-2 font-semibold">
+      <li>{years} years in Bergen County</li>
+      <li>Licensed and insured</li>
+      <li>Fixed-price written estimates</li>
+      <li>Permits handled for you</li>
+    </ul>
+  </section>
+
+  <!-- Services as a spec table, not cards -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 class="wide font-extrabold text-blueprint text-3xl sm:text-4xl leading-tight">What we build</h2>
+      <a href="/services" class="text-blueprint font-semibold underline underline-offset-4 decoration-2 hover:decoration-hivis">All services</a>
+    </div>
+    <ul class="mt-10 border-t-2 border-blueprint">
+      {services.map((s) => (
+        <li class="border-b border-line">
+          <a href={`/services/${s.slug}`} class="group grid gap-2 sm:grid-cols-[16rem_1fr_9rem] sm:gap-8 py-6 hover:bg-white -mx-3 px-3">
+            <span class="wide font-bold text-xl text-blueprint group-hover:underline underline-offset-4">{s.name}</span>
+            <span class="prose-measure">{s.summary}</span>
+            <span class="text-sm sm:text-right"><span class="block text-blueprint/70">Typical job</span><span class="font-semibold">{s.timeline}</span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Process: a real sequence, so numbered -->
+  <section class="bg-white border-y border-line">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+      <h2 class="wide font-extrabold text-blueprint text-3xl sm:text-4xl leading-tight">How a project runs</h2>
+      <ol class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {process.map((p, i) => (
+          <li class="border-l-4 border-hivis pl-5">
+            <span class="narrow font-black text-5xl text-blueprint/25 leading-none" aria-hidden="true">{i + 1}</span>
+            <h3 class="mt-2 font-bold text-lg text-blueprint">{p.title}</h3>
+            <p class="mt-2">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Service area + CTA -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-20 grid gap-12 lg:grid-cols-2">
+    <div>
+      <h2 class="wide font-extrabold text-blueprint text-3xl sm:text-4xl leading-tight">Towns we work in</h2>
+      <p class="mt-4 prose-measure">Our crews are based in {site.address.city}, so most jobs are within a 20-minute drive. Don't see your town? Call and ask.</p>
+      <ul class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-y-2 gap-x-6 font-semibold text-blueprint">
+        {site.serviceArea.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+    <div>
+      <LeadForm source="home" />
+    </div>
+  </section>
+</Base>

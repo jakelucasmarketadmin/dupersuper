@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "@fontsource-variable/archivo/standard.css";
+
+@theme {
+  --color-blueprint: #16325c;
+  --color-blueprint-deep: #0f2442;
+  --color-line: #a9bcd6;
+  --color-paper: #f5f6f2;
+  --color-hivis: #f2c230;
+  --color-graphite: #2a2d32;
+  --font-sans: "Archivo Variable", system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  background: var(--color-paper);
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.wide { font-stretch: 125%; }
+.narrow { font-stretch: 75%; }
+
+/* Blueprint grid used on dark panels */
+.grid-paper {
+  background-color: var(--color-blueprint);
+  background-image:
+    linear-gradient(rgb(169 188 214 / 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(169 188 214 / 0.14) 1px, transparent 1px),
+    linear-gradient(rgb(169 188 214 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(169 188 214 / 0.06) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-hivis);
+  outline-offset: 3px;
+}
+
+.prose-measure { max-width: 66ch; }

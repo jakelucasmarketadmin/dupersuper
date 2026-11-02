@@ -1,0 +1,28 @@
+---
+// Third-party form embed (JotForm), same pattern as the agency's live sites.
+// Set site.jotformId to switch it on; without it, visitors get call/email options.
+import { site } from "../site.config";
+interface Props { source?: string }
+const { source = "website" } = Astro.props;
+const telHref = "tel:" + site.phone.replace(/[^\d]/g, "");
+const src = site.jotformId
+  ? `https://form.jotform.com/${site.jotformId}?source=${encodeURIComponent(source)}`
+  : "";
+---
+{src ? (
+  <iframe
+    title="Request an estimate"
+    src={src}
+    class="w-full min-h-[640px] border-0 bg-white"
+    loading="lazy"
+  ></iframe>
+) : (
+  <div class="bg-white border-2 border-blueprint p-6 sm:p-8">
+    <p class="wide font-extrabold text-blueprint text-2xl leading-tight">Call or email for a free walkthrough</p>
+    <p class="mt-3 prose-measure">Tell us the room, the town, and roughly when you'd like to start. We reply within one business day.</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href={telHref} class="bg-hivis text-blueprint-deep font-semibold px-5 py-3 hover:bg-blueprint hover:text-paper">Call {site.phone}</a>
+      <a href={`mailto:${site.email}?subject=Estimate%20request`} class="border-2 border-blueprint text-blueprint font-semibold px-5 py-3 hover:bg-blueprint hover:text-paper">Email us</a>
+    </div>
+  </div>
+)}

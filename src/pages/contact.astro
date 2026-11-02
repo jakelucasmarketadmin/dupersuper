@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import LeadForm from "../components/LeadForm.astro";
+import { site } from "../site.config";
+const telHref = "tel:" + site.phone.replace(/[^\d]/g, "");
+---
+<Base title={`Get a Free Estimate | ${site.name}`} description={`Request a free walkthrough and fixed-price estimate from ${site.name} in Bergen County, NJ.`}>
+  <section class="grid-paper text-paper">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16">
+      <h1 class="wide font-black text-4xl sm:text-6xl leading-none tracking-tight">Get a free estimate</h1>
+      <p class="mt-5 text-xl max-w-[44ch]">We'll set up a walkthrough, measure, and send a written fixed price within a week.</p>
+    </div>
+  </section>
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-16 grid gap-12 lg:grid-cols-[1fr_20rem]">
+    <LeadForm source="contact" />
+    <div class="space-y-6">
+      <div><p class="text-sm text-blueprint/70">Phone</p><a href={telHref} class="wide font-extrabold text-2xl text-blueprint hover:underline tabular-nums">{site.phone}</a></div>
+      <div><p class="text-sm text-blueprint/70">Email</p><a href={`mailto:${site.email}`} class="font-semibold text-blueprint hover:underline break-all">{site.email}</a></div>
+      <div><p class="text-sm text-blueprint/70">Office</p><p>{site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postal}</p></div>
+      <div><p class="text-sm text-blueprint/70">Hours</p>{site.hours.map((h) => <p>{h.days}: {h.time}</p>)}</div>
+    </div>
+  </section>
+</Base>

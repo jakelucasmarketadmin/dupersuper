@@ -1,0 +1,124 @@
+---
+import "../styles/global.css";
+import { site, services } from "../site.config";
+
+interface Props {
+  title: string;
+  description?: string;
+  schema?: Record<string, unknown>[];
+}
+const { title, description = site.description, schema = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const telHref = "tel:" + site.phone.replace(/[^\d]/g, "");
+
+const business = {
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  name: site.name,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  foundingDate: String(site.founded),
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postal,
+    addressCountry: "US",
+  },
+  geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
+  openingHours: site.hours.map((h) => h.schema),
+  areaServed: site.serviceArea.map((t) => ({ "@type": "City", name: `${t}, NJ` })),
+};
+const nav = [
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Get an estimate" },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="theme-color" content="#16325c" />
+    <script type="application/ld+json" set:html={JSON.stringify(business)} />
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-hivis text-blueprint-deep px-3 py-2 font-semibold">Skip to content</a>
+
+    <header class="bg-blueprint-deep text-paper">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <a href="/" class="flex items-center gap-3 mr-auto" aria-label={`${site.name} home`}>
+          <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+            <rect x="1" y="1" width="32" height="32" fill="#f2c230" />
+            <path d="M7 24 L17 10 L27 24 Z" fill="none" stroke="#0f2442" stroke-width="3" stroke-linejoin="miter" />
+            <rect x="14" y="18" width="6" height="6" fill="#0f2442" />
+          </svg>
+          <span class="leading-none">
+            <span class="block wide font-extrabold text-[1.05rem] tracking-tight">Super Duper</span>
+            <span class="block narrow text-[0.8rem] text-line">Contractor Man Dude Company</span>
+          </span>
+        </a>
+        <nav aria-label="Main" class="flex items-center gap-5 text-[0.95rem]">
+          {nav.map((n) => (
+            <a
+              href={n.href}
+              class={n.href === "/contact"
+                ? "bg-hivis text-blueprint-deep font-semibold px-3 py-1.5 hover:bg-white"
+                : "hover:text-hivis"}
+            >{n.label}</a>
+          ))}
+        </nav>
+        <a href={telHref} class="hidden md:block font-semibold tabular-nums hover:text-hivis">{site.phone}</a>
+      </div>
+    </header>
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="bg-blueprint-deep text-line text-[0.95rem]">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <p class="wide font-extrabold text-paper text-lg leading-tight">{site.name}</p>
+          <p class="mt-3">{site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postal}</p>
+          <p class="mt-3"><a href={telHref} class="text-paper hover:text-hivis">{site.phone}</a><br />
+          <a href={`mailto:${site.email}`} class="hover:text-hivis break-all">{site.email}</a></p>
+        </div>
+        <div>
+          <p class="text-paper font-semibold">Services</p>
+          <ul class="mt-3 space-y-1.5">
+            {services.map((s) => <li><a href={`/services/${s.slug}`} class="hover:text-hivis">{s.name}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <p class="text-paper font-semibold">Hours</p>
+          <ul class="mt-3 space-y-1.5">
+            {site.hours.map((h) => <li>{h.days}<br /><span class="text-paper">{h.time}</span></li>)}
+          </ul>
+        </div>
+        <div>
+          <p class="text-paper font-semibold">Towns we serve</p>
+          <p class="mt-3">{site.serviceArea.join(", ")}</p>
+        </div>
+      </div>
+      <div class="border-t border-white/10">
+        <p class="mx-auto max-w-6xl px-4 sm:px-6 py-5 text-sm">
+          © {new Date().getFullYear()} {site.name}. Licensed and insured, {site.license}.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
