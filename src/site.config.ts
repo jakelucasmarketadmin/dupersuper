@@ -4,7 +4,7 @@
 export const site = {
   name: "Super Duper Contractor Man Dude Company",
   shortName: "Super Duper",
-  url: "https://superdupercontractor.pages.dev", // change to the client's domain at launch
+  url: "https://super-duper-contractor.pages.dev", // change to the client's domain at launch
   tagline: "Kitchens, baths, decks and additions built right the first time.",
   description:
     "Licensed and insured general contractor serving Bergen County, NJ. Kitchen and bathroom remodels, decks, additions and basements with fixed-price estimates.",
